@@ -22,7 +22,10 @@ function App() {
 
   return (
     <div className="App">
-      <CustomButton buttonText="Создать нового игрока" type="button" onClick={showNewPlayerModal} />
+      <p>Исключительно для некоммерческого использования</p>
+      <header className="header">
+        <CustomButton buttonText="Создать нового игрока" type="button" onClick={showNewPlayerModal} />
+      </header>
       <PlayersList playersList={playersList} />
       <CustomModal isOpen={isNewPlayerModalOpen}>
         <NewPlayer />

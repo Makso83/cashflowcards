@@ -1,2 +1,2 @@
 export const NEW_PLAYER_MODAL = 'NEW_PLAYER';
-export const DUMMY = 'DUMMY';
+export const DELETE_PLAYER_MODAL = 'DELETE_PLAYER_MODAL';

@@ -7,6 +7,11 @@ export const addPlayer = (payload) => ({
   payload,
 });
 
+export const deletePlayer = (id) => ({
+  type: `${DELETE} ${PLAYER}`,
+  payload: id,
+});
+
 export const removeProfessionTemplate = (id) => ({
   type: `${DELETE} ${PROFESSION}`,
   payload: id,

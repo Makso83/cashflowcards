@@ -17,6 +17,12 @@ const playersReducer = (state = initState, action) => {
         playersList: [...state.playersList, action.payload],
       };
     }
+    case `${DELETE} ${PLAYER}`: {
+      return {
+        ...state,
+        playersList: state.playersList.filter((player) => player.uid !== action.payload),
+      };
+    }
     case `${RESET} ${PLAYER}`: {
       return {
         ...initState,
