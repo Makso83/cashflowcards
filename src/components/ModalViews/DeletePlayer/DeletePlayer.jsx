@@ -2,16 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import CustomButton from '../../CustomButton/CustomButton';
-import { deletePlayer } from '../../../store/actions/players';
+import { deletePlayer, restoreProfessionTemplate } from '../../../store/actions/players';
 import { hideModal } from '../../../store/actions/activeModal';
 
 import styles from './DeletePlayer.module.scss';
 
-function DeletePlayer({ playerName, playerUID }) {
+function DeletePlayer({ playerName, playerUID, professionId }) {
   const dispatch = useDispatch();
   const onAccept = () => {
     dispatch(deletePlayer(playerUID));
     dispatch(hideModal());
+    dispatch(restoreProfessionTemplate(professionId));
   };
   return (
     <div className={styles.root}>
@@ -28,6 +29,7 @@ function DeletePlayer({ playerName, playerUID }) {
 DeletePlayer.propTypes = {
   playerName: PropTypes.string.isRequired,
   playerUID: PropTypes.string.isRequired,
+  professionId: PropTypes.string.isRequired,
 };
 
 export default DeletePlayer;

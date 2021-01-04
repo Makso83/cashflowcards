@@ -31,7 +31,11 @@ function PlayersList({ playersList }) {
         {playersList.map((player) => <PlayerPreview key={player.uid} player={player} />)}
       </div>
       <CustomModal isOpen={isOpen}>
-        <DeletePlayer playerName={playerToDelete.name} playerUID={playerToDelete.uid} />
+        <DeletePlayer
+          playerName={playerToDelete.name}
+          playerUID={playerToDelete.uid}
+          professionId={playerToDelete.professionId}
+        />
       </CustomModal>
     </>
 

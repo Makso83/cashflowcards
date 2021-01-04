@@ -21,6 +21,7 @@ function PlayerPreview({ player }) {
       data: {
         name: player.playerName,
         uid: player.uid,
+        professionId: player.professionId,
       },
     }));
   };
@@ -29,8 +30,10 @@ function PlayerPreview({ player }) {
       <DeleteForeverIcon className={styles.deleteIcon} onClick={deletePlayer} />
       <CardContent>
         <Typography variant="h5" component="h2">{player.playerName}</Typography>
-        <Typography color="textSecondary">{player.profession}</Typography>
+        <Typography variant="subtitle2">{player.profession}</Typography>
         <Typography color="textPrimary">{`Денежный поток $${calculateNetAmount(player)}/мес.`}</Typography>
+        <Typography color="textPrimary">{`Наличные $${player.cash}`}</Typography>
+        <Typography color="textPrimary">{`Детей ${player.children ? `: ${player.children}` : 'нет'}`}</Typography>
       </CardContent>
       <CardActions>
         <CustomButton buttonText="Подробнее.." />

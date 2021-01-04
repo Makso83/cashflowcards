@@ -1,5 +1,5 @@
 import {
-  ADD, DELETE, PLAYER, PROFESSION, RESET,
+  ADD, DELETE, PLAYER, PROFESSION, RESET, RESTORE,
 } from '../constants/actionTypes';
 
 export const addPlayer = (payload) => ({
@@ -14,6 +14,11 @@ export const deletePlayer = (id) => ({
 
 export const removeProfessionTemplate = (id) => ({
   type: `${DELETE} ${PROFESSION}`,
+  payload: id,
+});
+
+export const restoreProfessionTemplate = (id) => ({
+  type: `${RESTORE} ${PROFESSION}`,
   payload: id,
 });
 

@@ -1,5 +1,5 @@
 import {
-  ADD, DELETE, PLAYER, PROFESSION, RESET,
+  ADD, DELETE, PLAYER, PROFESSION, RESET, RESTORE,
 } from '../constants/actionTypes';
 import playersTemplates from '../../constants/playersTemplates';
 
@@ -33,6 +33,14 @@ const playersReducer = (state = initState, action) => {
       return {
         ...state,
         playersTemplates: state.playersTemplates.filter((template) => template.professionId !== id),
+      };
+    }
+    case `${RESTORE} ${PROFESSION}`: {
+      const id = action.payload;
+      const restored = playersTemplates.find((profession) => profession.professionId === id);
+      return {
+        ...state,
+        playersTemplates: [...state.playersTemplates, restored],
       };
     }
     default:
