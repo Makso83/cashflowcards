@@ -9,6 +9,7 @@ import { addPlayer, removeProfessionTemplate } from '../../../store/actions/play
 
 import styles from './NewPlayer.module.scss';
 import { hideModal } from '../../../store/actions/activeModal';
+import { getPayment } from '../../../utils/calculateAmounts';
 
 export default () => {
   const [nameValue, setNameValue] = useState('');
@@ -31,6 +32,7 @@ export default () => {
     const newPlayer = randomTemplate(templates);
     newPlayer.playerName = nameValue;
     newPlayer.uid = uniqueId();
+    newPlayer.payments = { ...newPlayer.payments, ...getPayment(newPlayer) };
     dispatch(addPlayer(newPlayer));
     dispatch(removeProfessionTemplate(newPlayer.professionId));
     dispatch(hideModal());
@@ -61,7 +63,6 @@ export default () => {
       <div className={styles.buttonWrapper}>
         <CustomButton buttonText="Создать" buttonType="submit" />
       </div>
-
     </form>
 
   );
