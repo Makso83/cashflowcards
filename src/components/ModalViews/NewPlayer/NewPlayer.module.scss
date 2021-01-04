@@ -1,0 +1,15 @@
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+}
+
+.formHeader {
+    text-transform: uppercase;
+}
+
+.inputWrapper {
+    margin: 10px 0;
+}

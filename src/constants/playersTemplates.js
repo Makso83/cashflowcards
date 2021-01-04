@@ -1,0 +1,70 @@
+import uniqueId from 'lodash.uniqueid';
+
+export default [
+  {
+    professionId: uniqueId(),
+    profession: 'Конструктор',
+    incomes: {
+      salary: 4900,
+      investing: 0,
+      dividends: 0,
+      estate: 0,
+    },
+    taxes: 1050,
+    other: 1090,
+    perChild: 250,
+    cash: 400,
+    debts: {
+      house: 75000,
+      education: 12000,
+      car: 7000,
+      cards: 4000,
+      shops: 1000,
+      bank: 0,
+    },
+  },
+  {
+    professionId: uniqueId(),
+    profession: 'Механик',
+    incomes: {
+      salary: 2000,
+      investing: 0,
+      dividends: 0,
+      estate: 0,
+    },
+    taxes: 360,
+    other: 450,
+    perChild: 110,
+    cash: 670,
+    debts: {
+      house: 31000,
+      education: 0,
+      car: 3000,
+      cards: 2000,
+      shops: 1000,
+      bank: 0,
+    },
+  },
+  {
+    professionId: uniqueId(),
+    profession: 'Врач',
+    incomes: {
+      salary: 13200,
+      investing: 0,
+      dividends: 0,
+      estate: 0,
+    },
+    taxes: 3420,
+    other: 2880,
+    perChild: 640,
+    cash: 400,
+    debts: {
+      house: 202000,
+      education: 150000,
+      car: 19000,
+      cards: 9000,
+      shops: 1000,
+      bank: 0,
+    },
+  },
+];

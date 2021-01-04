@@ -2,11 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 
+import { useDispatch } from 'react-redux';
 import styles from './CustomModal.module.scss';
+import { hideModal } from '../../store/actions/activeModal';
 
 function CustomModal({
-  isOpen, children, closeModal, customStyles,
+  isOpen, children, customStyles,
 }) {
+  const dispatch = useDispatch();
+  const closeModal = () => {
+    dispatch(hideModal());
+  };
+
   return (
     <ReactModal
       isOpen={isOpen}
@@ -26,14 +33,12 @@ CustomModal.defaultProps = {
   isOpen: false,
   children: null,
   customStyles: {},
-  closeModal: () => {},
 };
 
 CustomModal.propTypes = {
   isOpen: PropTypes.bool,
   children: PropTypes.element,
   customStyles: PropTypes.object,
-  closeModal: PropTypes.func,
 };
 
 export default CustomModal;
