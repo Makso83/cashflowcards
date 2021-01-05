@@ -58,6 +58,7 @@ export default () => {
           error={nameError}
           inputValue={nameValue}
           onFocus={onNameFocus}
+          autoFocus
         />
       </div>
       <div className={styles.buttonWrapper}>

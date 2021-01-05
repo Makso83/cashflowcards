@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 
 const CustomInput = ({
-  inputName, placeholder, type, inputValue, onChange, error, onFocus,
+  inputName, placeholder, type, inputValue, onChange, error, onFocus, autoFocus,
 }) => (
   <div>
     <TextField
@@ -15,6 +15,7 @@ const CustomInput = ({
       label={inputName}
       error={!!error}
       onFocus={onFocus}
+      autoFocus={autoFocus}
     />
   </div>
 );
@@ -27,6 +28,7 @@ CustomInput.defaultProps = {
   onChange: () => {},
   onFocus: () => {},
   error: '',
+  autoFocus: false,
 };
 
 CustomInput.propTypes = {
@@ -37,6 +39,7 @@ CustomInput.propTypes = {
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
   error: PropTypes.string,
+  autoFocus: PropTypes.bool,
 };
 
 export default CustomInput;
