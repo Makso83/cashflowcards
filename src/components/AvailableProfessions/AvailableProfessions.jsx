@@ -12,7 +12,7 @@ function AvailableProfessions() {
   };
   return (
     <div style={styles}>
-      {professions.map((item) => <Chip label={item.profession} />)}
+      {professions.map((item) => <Chip key={item.profession} label={item.profession} />)}
     </div>
   );
 }

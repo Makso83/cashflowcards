@@ -26,10 +26,16 @@ function DeletePlayer({ playerName, playerUID, professionId }) {
   );
 }
 
+DeletePlayer.defaultProps = {
+  playerName: '',
+  playerUID: '',
+  professionId: '',
+};
+
 DeletePlayer.propTypes = {
-  playerName: PropTypes.string.isRequired,
-  playerUID: PropTypes.string.isRequired,
-  professionId: PropTypes.string.isRequired,
+  playerName: PropTypes.string,
+  playerUID: PropTypes.string,
+  professionId: PropTypes.string,
 };
 
 export default DeletePlayer;
