@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import uniqueId from 'lodash.uniqueid';
 import { selectPlayersTemplates } from '../../../store/selectors/players';
-import { randomTemplate, isTemplates } from '../../../utils/randomTemplate';
+import { isTemplates } from '../../../utils/randomTemplate';
 import CustomButton from '../../CustomButton/CustomButton';
 import CustomInput from '../../CustomInput/CustomInput';
 import { addPlayer, removeProfessionTemplate } from '../../../store/actions/players';
 
 import styles from './NewPlayer.module.scss';
 import { hideModal } from '../../../store/actions/activeModal';
-import { getPayment } from '../../../utils/calculateAmounts';
+import makeNewPlayer from '../../../utils/makeNewPlayer';
 
 export default () => {
   const [nameValue, setNameValue] = useState('');
@@ -29,10 +28,7 @@ export default () => {
       setNameError('Обязательное поле');
       return false;
     }
-    const newPlayer = randomTemplate(templates);
-    newPlayer.playerName = nameValue;
-    newPlayer.uid = uniqueId();
-    newPlayer.payments = { ...newPlayer.payments, ...getPayment(newPlayer) };
+    const newPlayer = makeNewPlayer(nameValue, templates);
     dispatch(addPlayer(newPlayer));
     dispatch(removeProfessionTemplate(newPlayer.professionId));
     dispatch(hideModal());

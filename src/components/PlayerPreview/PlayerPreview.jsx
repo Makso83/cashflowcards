@@ -5,22 +5,22 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomButton from '../CustomButton/CustomButton';
 import { calculateNetAmount } from '../../utils/calculateAmounts';
 
 import styles from './PlayerPreview.module.scss';
 import { showModal } from '../../store/actions/activeModal';
-import { DELETE_PLAYER_MODAL, PLAYER_DETAILS_MODAL } from '../../constants/modals';
-import CustomModal from '../CustomModal/CustomModal';
-import PlayerDetails from '../ModalViews/PlayerDetails/PlayerDetails';
-import selectActiveModal from '../../store/selectors/activeModal';
+import { DELETE_PLAYER_MODAL } from '../../constants/modals';
+import { setCurrentPlayer } from '../../store/actions/players';
+import { selectCurrentPlayer } from '../../store/selectors/players';
 
 function PlayerPreview({ player }) {
   const dispatch = useDispatch();
-  const activeModal = useSelector(selectActiveModal);
+  const currentPlayer = useSelector(selectCurrentPlayer);
 
-  const isDetailsModalOpen = activeModal.name === PLAYER_DETAILS_MODAL;
+  const isCurrentPlayer = currentPlayer ? player.uid === currentPlayer.uid : false;
 
   const deletePlayer = () => {
     dispatch(showModal({
@@ -34,7 +34,7 @@ function PlayerPreview({ player }) {
   };
 
   const openDetails = () => {
-    dispatch(showModal({ name: PLAYER_DETAILS_MODAL, data: player }));
+    dispatch(setCurrentPlayer(player));
   };
 
   return (
@@ -49,12 +49,10 @@ function PlayerPreview({ player }) {
           <Typography color="textPrimary">{`Детей ${player.children ? `: ${player.children}` : 'нет'}`}</Typography>
         </CardContent>
         <CardActions>
-          <CustomButton buttonText="Подробнее.." onClick={openDetails} />
+          {!isCurrentPlayer && <CustomButton buttonText="Подробнее..." onClick={openDetails} />}
         </CardActions>
+        {isCurrentPlayer && <ArrowDownwardIcon className={styles.downArrow} />}
       </Card>
-      <CustomModal isOpen={isDetailsModalOpen}>
-        <PlayerDetails />
-      </CustomModal>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import {
-  ADD, DELETE, PLAYER, PROFESSION, RESET, RESTORE,
+  ACCOUNT_CASH,
+  ADD, CURRENT_PLAYER, DELETE, PLAYER, PROFESSION, REFILL, RESET, RESTORE, SET,
 } from '../constants/actionTypes';
 
 export const addPlayer = (payload) => ({
@@ -24,4 +25,18 @@ export const restoreProfessionTemplate = (id) => ({
 
 export const resetPlayers = () => ({
   type: `${RESET} ${PLAYER}`,
+});
+
+export const setCurrentPlayer = (payload) => ({
+  type: `${SET} ${CURRENT_PLAYER}`,
+  payload,
+});
+
+export const resetCurrentPlayer = () => ({
+  type: `${RESET} ${CURRENT_PLAYER}`,
+});
+
+export const refillAccountCash = (payload) => ({
+  type: `${REFILL} ${ACCOUNT_CASH}`,
+  payload,
 });

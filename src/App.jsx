@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AvailableProfessions from './components/AvailableProfessions/AvailableProfessions';
+import CurrentPlayer from './components/CurrentPlayer/CurrentPlayer';
 import CustomButton from './components/CustomButton/CustomButton';
 import CustomModal from './components/CustomModal/CustomModal';
 import NewPlayer from './components/ModalViews/NewPlayer/NewPlayer';
@@ -29,6 +30,7 @@ function App() {
       </header>
       <AvailableProfessions />
       <PlayersList playersList={playersList} />
+      <CurrentPlayer />
       <CustomModal isOpen={isNewPlayerModalOpen}>
         <NewPlayer />
       </CustomModal>

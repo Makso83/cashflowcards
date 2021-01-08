@@ -3,6 +3,16 @@
     margin: 10px;
 }
 
+.downArrow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px!important;
+    height: 150px!important;
+    opacity: 0.3;
+}
+
 .deleteIcon {
     color: red;
     position: absolute;

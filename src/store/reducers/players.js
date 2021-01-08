@@ -1,5 +1,6 @@
 import {
-  ADD, DELETE, PLAYER, PROFESSION, RESET, RESTORE,
+  ACCOUNT_CASH,
+  ADD, CURRENT_PLAYER, DELETE, PLAYER, PROFESSION, REFILL, RESET, RESTORE, SET,
 } from '../constants/actionTypes';
 import playersTemplates from '../../constants/playersTemplates';
 
@@ -41,6 +42,27 @@ const playersReducer = (state = initState, action) => {
       return {
         ...state,
         playersTemplates: [...state.playersTemplates, restored],
+      };
+    }
+    case `${SET} ${CURRENT_PLAYER}`: {
+      return {
+        ...state,
+        currentPlayer: action.payload,
+      };
+    }
+    case `${RESET} ${CURRENT_PLAYER}`: {
+      return {
+        ...state,
+        currentPlayer: null,
+      };
+    }
+    case `${REFILL} ${ACCOUNT_CASH}`: {
+      const newState = { ...state };
+      const playerUID = action.payload.uid;
+      const player = newState.playersList.find((person) => person.uid === playerUID);
+      player.cash += action.payload.amount;
+      return {
+        ...newState,
       };
     }
     default:
