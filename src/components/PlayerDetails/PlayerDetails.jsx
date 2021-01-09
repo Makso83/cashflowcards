@@ -1,7 +1,7 @@
 import {
   Button,
   Paper,
-  Table, TableCell, TableRow, Typography,
+  Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -12,7 +12,7 @@ import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import { debtsTable, incomeTableData, paymentTableData } from '../../constants/detailsTableData';
 import {
-  calculateAmountByType, calculateIncome, calculatePayment,
+  calculateIncome, calculatePayment,
 } from '../../utils/calculateAmounts';
 import styles from './PlayerDetails.module.scss';
 import { refillAccountCash, resetCurrentPlayer } from '../../store/actions/players';
@@ -24,11 +24,7 @@ import CustomModal from '../CustomModal/CustomModal';
 import selectActiveModal from '../../store/selectors/activeModal';
 import RefillSuccess from '../ModalViews/finance/RefillSuccess';
 import AmountDialog from '../ModalViews/finance/AmountDialog/AmountDialog';
-
-const createRow = (player, title, table, valueName) => {
-  const value = `$${calculateAmountByType(player, table, valueName)}`;
-  return { rowTitle: title, value };
-};
+import DetailsTable from '../DetailsTable/DetailsTable';
 
 function PlayerDetails({ player }) {
   const dispatch = useDispatch();
@@ -84,44 +80,20 @@ function PlayerDetails({ player }) {
           <Typography variant="subtitle2">{player.profession}</Typography>
         </div>
         <div className={styles.topTables}>
-          <div>
-            <Typography variant="subtitle1">Доходы</Typography>
-            <Table>
-              {incomeTableData.map((line) => {
-                const { title, table, valueName } = line;
-                const { rowTitle, value } = createRow(player, title, table, valueName);
-                return (
-                  <TableRow key={rowTitle}>
-                    <TableCell>{rowTitle}</TableCell>
-                    <TableCell>{value}</TableCell>
-                  </TableRow>
-                );
-              })}
-              <TableRow>
-                <TableCell><p className={styles.strongText}>Итого доходов:</p></TableCell>
-                <TableCell><p className={styles.strongText}>{`$${playerIncome}`}</p></TableCell>
-              </TableRow>
-            </Table>
-          </div>
-          <div>
-            <Typography variant="subtitle1">Расходы</Typography>
-            <Table>
-              {paymentTableData.map((line) => {
-                const { title, table, valueName } = line;
-                const { rowTitle, value } = createRow(player, title, table, valueName);
-                return (
-                  <TableRow key={rowTitle}>
-                    <TableCell>{rowTitle}</TableCell>
-                    <TableCell>{value}</TableCell>
-                  </TableRow>
-                );
-              })}
-              <TableRow>
-                <TableCell><p className={styles.strongText}>Итого расходов:</p></TableCell>
-                <TableCell><p className={styles.strongText}>{`$${calculatePayment(player)}`}</p></TableCell>
-              </TableRow>
-            </Table>
-          </div>
+          <DetailsTable
+            player={player}
+            tableData={incomeTableData}
+            header="Доходы"
+            totalAmount={playerIncome}
+            styles={styles}
+          />
+          <DetailsTable
+            player={player}
+            tableData={paymentTableData}
+            header="Расходы"
+            totalAmount={playerPayment}
+            styles={styles}
+          />
         </div>
         <div className={styles.accountInfo}>
           <Typography variant="h6" component="h4">{`Ежемесячный денежный поток: $${playerCashlow}`}</Typography>
@@ -155,21 +127,12 @@ function PlayerDetails({ player }) {
             </Button>
           </div>
         </div>
-        <div>
-          <Typography variant="subtitle1">Выписка по задолженности</Typography>
-          <Table>
-            {debtsTable.map((line) => {
-              const { title, table, valueName } = line;
-              const { rowTitle, value } = createRow(player, title, table, valueName);
-              return (
-                <TableRow key={rowTitle}>
-                  <TableCell>{rowTitle}</TableCell>
-                  <TableCell>{value}</TableCell>
-                </TableRow>
-              );
-            })}
-          </Table>
-        </div>
+        <DetailsTable
+          player={player}
+          tableData={debtsTable}
+          header="Выписка по задолженности"
+          styles={styles}
+        />
       </Paper>
       <CustomModal isOpen={isSuccessRefillOpen || isWithdrawModalOpen}>
         {isSuccessRefillOpen && <RefillSuccess />}

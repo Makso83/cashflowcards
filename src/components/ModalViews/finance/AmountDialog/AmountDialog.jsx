@@ -12,12 +12,22 @@ import styles from './AmountDialog.module.scss';
 
 function AmountDialog({ amountType }) {
   const currentPlayer = useSelector(selectCurrentPlayer);
-  const [amount, setAmount] = useState(0);
-  const [notEnough, setNotEnough] = useState(false);
+  const [amount, setAmount] = useState(null);
+  const [amountError, setAmountError] = useState(false);
   const dispatch = useDispatch();
 
   const isWithdrawal = amountType.trim() ? amountType === WITHDRAW_FROM_ACCOUNT : false;
   const isAddBankDebt = amountType.trim() ? amountType === ADD_BANK_DEBT : false;
+
+  const buttonText = () => {
+    if (isWithdrawal) {
+      return 'Списать';
+    }
+    if (isAddBankDebt) {
+      return 'Взять кредит';
+    }
+    return 'Button';
+  };
 
   if (!currentPlayer) {
     return null;
@@ -31,43 +41,54 @@ function AmountDialog({ amountType }) {
     evt.preventDefault();
     if (isWithdrawal) {
       if (+amount > +currentPlayer.cash) {
-        setNotEnough(true);
+        setAmountError(true);
       } else {
-        setNotEnough(false);
+        setAmountError(false);
         dispatch(withdrawAccountCash({ uid: currentPlayer.uid, amount }));
+        dispatch(hideModal());
       }
     }
     if (isAddBankDebt) {
-      dispatch(addBankCredit({ uid: currentPlayer.uid, amount }));
-      dispatch(setCurrentPlayer(currentPlayer));
+      if (+amount % 1000 === 0) {
+        dispatch(addBankCredit({ uid: currentPlayer.uid, amount }));
+        dispatch(setCurrentPlayer(currentPlayer));
+        dispatch(hideModal());
+      } else {
+        setAmountError(true);
+      }
     }
-    dispatch(hideModal());
   };
   return (
     <form onSubmit={onSubmit} className={styles.formWrapper}>
-      <h2 className={styles.formHeader}>Списание денежных средств</h2>
+      <h2 className={styles.formHeader}>Движение денежных средств</h2>
       <div className={styles.inputWrapper}>
         <CustomInput
-          inputName="Name"
+          inputName="Сумма"
           type="number"
           onChange={onAmountChange}
-          placeholder="Сумму"
-          error={notEnough}
+          placeholder="Сумма"
+          error={amountError}
           inputValue={amount}
-          onFocus={() => setNotEnough(false)}
+          onFocus={() => setAmountError(false)}
           autoFocus
         />
       </div>
       {isWithdrawal && (
       <>
-        {notEnough
+        {amountError
           ? <p className={styles.errorText}>Сумма на счете недостаточна для списания.</p>
           : <p>Укажите сумму для списания</p>}
       </>
       )}
-      {isAddBankDebt && <p>{`Ежемесячная выплата: $${amount * 0.1}`}</p>}
+      {isAddBankDebt && (
+      <>
+        {amountError
+          ? <p className={styles.errorText}>Сумма должна быть кратна 1000</p>
+          : <p>{`Ежемесячная выплата: $${(amount * 0.1).toFixed(0)}`}</p>}
+      </>
+      )}
       <div className={styles.buttonWrapper}>
-        <CustomButton buttonText="Списать" buttonType="submit" />
+        <CustomButton buttonText={buttonText()} buttonType="submit" />
       </div>
     </form>
   );
