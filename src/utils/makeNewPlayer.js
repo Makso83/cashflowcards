@@ -6,6 +6,7 @@ const makeNewPlayer = (nameValue, templates) => {
   const newPlayer = randomTemplate(templates);
   newPlayer.playerName = nameValue;
   newPlayer.uid = uniqueId();
+  newPlayer.payments.bank = 0;
   newPlayer.payments = { ...newPlayer.payments, ...getPayment(newPlayer) };
   return newPlayer;
 };

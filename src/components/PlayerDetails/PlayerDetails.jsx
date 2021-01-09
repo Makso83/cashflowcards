@@ -9,18 +9,21 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
-import { incomeTableData, paymentTableData } from '../../constants/detailsTableData';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import { debtsTable, incomeTableData, paymentTableData } from '../../constants/detailsTableData';
 import {
   calculateAmountByType, calculateIncome, calculatePayment,
 } from '../../utils/calculateAmounts';
 import styles from './PlayerDetails.module.scss';
 import { refillAccountCash, resetCurrentPlayer } from '../../store/actions/players';
-import { ACCOUNT_REFILL_SUCCESS, SET_WITHDRAW_MODAL } from '../../constants/modals';
+import {
+  ACCOUNT_REFILL_SUCCESS, ADD_BANK_DEBT, AMOUNT_DIALOG_MODAL, WITHDRAW_FROM_ACCOUNT,
+} from '../../constants/modals';
 import { showModal } from '../../store/actions/activeModal';
 import CustomModal from '../CustomModal/CustomModal';
 import selectActiveModal from '../../store/selectors/activeModal';
 import RefillSuccess from '../ModalViews/finance/RefillSuccess';
-import WithdrawFromAccount from '../ModalViews/finance/WithdrawFromAccount/WithdrawFromAccount';
+import AmountDialog from '../ModalViews/finance/AmountDialog/AmountDialog';
 
 const createRow = (player, title, table, valueName) => {
   const value = `$${calculateAmountByType(player, table, valueName)}`;
@@ -33,7 +36,7 @@ function PlayerDetails({ player }) {
   const activeModal = useSelector(selectActiveModal);
 
   const isSuccessRefillOpen = activeModal.name === ACCOUNT_REFILL_SUCCESS;
-  const isWithdrawModalOpen = activeModal.name === SET_WITHDRAW_MODAL;
+  const isWithdrawModalOpen = activeModal.name === AMOUNT_DIALOG_MODAL;
 
   const playerIncome = calculateIncome(player);
   const playerPayment = calculatePayment(player);
@@ -57,7 +60,19 @@ function PlayerDetails({ player }) {
   };
 
   const withdrawFromAccount = () => {
-    dispatch(showModal({ name: SET_WITHDRAW_MODAL, data: player.uid }));
+    dispatch(showModal({
+      name: AMOUNT_DIALOG_MODAL,
+      data: player.uid,
+      type: WITHDRAW_FROM_ACCOUNT,
+    }));
+  };
+
+  const addBankDebt = () => {
+    dispatch(showModal({
+      name: AMOUNT_DIALOG_MODAL,
+      data: player.uid,
+      type: ADD_BANK_DEBT,
+    }));
   };
 
   return (
@@ -76,7 +91,7 @@ function PlayerDetails({ player }) {
                 const { title, table, valueName } = line;
                 const { rowTitle, value } = createRow(player, title, table, valueName);
                 return (
-                  <TableRow>
+                  <TableRow key={rowTitle}>
                     <TableCell>{rowTitle}</TableCell>
                     <TableCell>{value}</TableCell>
                   </TableRow>
@@ -95,7 +110,7 @@ function PlayerDetails({ player }) {
                 const { title, table, valueName } = line;
                 const { rowTitle, value } = createRow(player, title, table, valueName);
                 return (
-                  <TableRow>
+                  <TableRow key={rowTitle}>
                     <TableCell>{rowTitle}</TableCell>
                     <TableCell>{value}</TableCell>
                   </TableRow>
@@ -129,12 +144,36 @@ function PlayerDetails({ player }) {
             >
               Списать со счета
             </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AccountBalanceIcon />}
+              disabled={!isSalaryEnabled}
+              onClick={addBankDebt}
+            >
+              Взять кредит
+            </Button>
           </div>
+        </div>
+        <div>
+          <Typography variant="subtitle1">Выписка по задолженности</Typography>
+          <Table>
+            {debtsTable.map((line) => {
+              const { title, table, valueName } = line;
+              const { rowTitle, value } = createRow(player, title, table, valueName);
+              return (
+                <TableRow key={rowTitle}>
+                  <TableCell>{rowTitle}</TableCell>
+                  <TableCell>{value}</TableCell>
+                </TableRow>
+              );
+            })}
+          </Table>
         </div>
       </Paper>
       <CustomModal isOpen={isSuccessRefillOpen || isWithdrawModalOpen}>
         {isSuccessRefillOpen && <RefillSuccess />}
-        {isWithdrawModalOpen && <WithdrawFromAccount />}
+        {isWithdrawModalOpen && <AmountDialog amountType={activeModal.type} />}
       </CustomModal>
     </>
   );

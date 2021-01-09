@@ -1,6 +1,6 @@
 import { DELETE_PLAYER_MODAL } from '../constants/modals';
 import {
-  ACCOUNT_CASH, ADD, CURRENT_PLAYER, DELETE, HIDE, MODAL, PLAYER, REFILL, RESET, SET, SHOW, WITHDRAW,
+  ACCOUNT_CASH, ADD, CURRENT_PLAYER, DEBT, DELETE, HIDE, MODAL, PLAYER, REFILL, RESET, SET, SHOW, WITHDRAW,
 } from '../store/constants/actionTypes';
 import activeModal from '../store/reducers/activeModal';
 import makeNewPlayer from '../utils/makeNewPlayer';
@@ -110,4 +110,19 @@ describe('player manipulations', () => {
     const newState = playersReducer(stateWithPlayer, action);
     expect(newState.playersList[0].cash).toEqual(testPlayerCash - 10);
   });
+  it('adds new bank credit', () => {
+    const testPlayerCash = testPlayer.cash;
+    const action = {
+      type: `${ADD} ${DEBT}`,
+      payload: {
+        uid: stateWithPlayer.playersList[0].uid,
+        amount: 1000,
+      },
+    }
+      const newState = playersReducer(stateWithPlayer, action);
+      expect(newState.playersList[0].debts.bank).toEqual(1000);
+      expect(newState.playersList[0].payments.bank).toEqual(100);
+      expect(testPlayer.cash).toEqual(testPlayerCash + 1000);
+
+  })
 });

@@ -57,4 +57,37 @@ export const paymentTableData = [
     table: 'payments',
     valueName: 'shops',
   },
+  {
+    title: 'Проценты по кредитам',
+    table: 'payments',
+    valueName: 'bank',
+  },
+];
+
+export const debtsTable = [
+  {
+    title: 'Закладная на дом',
+    table: 'debts',
+    valueName: 'house',
+  },
+  {
+    title: 'Кредит на образование',
+    table: 'debts',
+    valueName: 'education',
+  },
+  {
+    title: 'Кредит на автомобиль',
+    table: 'debts',
+    valueName: 'car',
+  },
+  {
+    title: 'Кpедитные карты',
+    table: 'debts',
+    valueName: 'cards',
+  },
+  {
+    title: 'Кредит банка',
+    table: 'debts',
+    valueName: 'bank',
+  },
 ];

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectCurrentPlayer } from '../../store/selectors/players';
-import PlayerDetails from '../ModalViews/PlayerDetails/PlayerDetails';
+import PlayerDetails from '../PlayerDetails/PlayerDetails';
 
 function CurrentPlayer() {
   const currentPlayer = useSelector(selectCurrentPlayer);

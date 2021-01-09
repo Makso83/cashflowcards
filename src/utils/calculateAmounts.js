@@ -6,6 +6,7 @@ export const getPayment = (player) => {
   payments.card = +debts.cards * 0.03;
   payments.house = Math.round((+debts.house * 0.0095) / 100) * 100;
   payments.shops = +debts.shops * 0.05;
+  payments.bank = +debts.bank * 0.1;
   if (player.children) {
     payments.children = player.children * player.perChild;
   }
@@ -39,7 +40,7 @@ export const calculateAmountByType = (player, flow, type) => {
       throw new Error('Неверное значение потока');
     }
     const amount = cashFlow[type];
-    if (!amount) {
+    if (!amount && amount !== 0) {
       throw new Error('Неверное значение статьи');
     }
     if (Array.isArray(amount)) {
@@ -47,6 +48,7 @@ export const calculateAmountByType = (player, flow, type) => {
     }
     return amount;
   } catch (error) {
+    console.log(flow, type);
     console.error(error);
     return 0;
   }
