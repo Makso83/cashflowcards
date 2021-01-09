@@ -11,6 +11,7 @@ function RefillSuccess() {
         {
           textAlign: 'center',
           padding: '30px',
+          textTransform: 'uppercase',
         }
     }
     >

@@ -48,7 +48,7 @@ export default () => {
       <h2 className={styles.formHeader}>Создание нового игрока</h2>
       <div className={styles.inputWrapper}>
         <CustomInput
-          inputName="Имя"
+          inputName="Name"
           onChange={onNameChange}
           placeholder="Введите имя игрока"
           error={nameError}

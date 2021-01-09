@@ -8,17 +8,19 @@ import PropTypes from 'prop-types';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { incomeTableData, paymentTableData } from '../../../constants/detailsTableData';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import { incomeTableData, paymentTableData } from '../../constants/detailsTableData';
 import {
   calculateAmountByType, calculateIncome, calculatePayment,
-} from '../../../utils/calculateAmounts';
+} from '../../utils/calculateAmounts';
 import styles from './PlayerDetails.module.scss';
-import { refillAccountCash, resetCurrentPlayer } from '../../../store/actions/players';
-import { ACCOUNT_REFILL_SUCCESS } from '../../../constants/modals';
-import { showModal } from '../../../store/actions/activeModal';
-import CustomModal from '../../CustomModal/CustomModal';
-import selectActiveModal from '../../../store/selectors/activeModal';
-import RefillSuccess from '../finance/RefillSuccess';
+import { refillAccountCash, resetCurrentPlayer } from '../../store/actions/players';
+import { ACCOUNT_REFILL_SUCCESS, SET_WITHDRAW_MODAL } from '../../constants/modals';
+import { showModal } from '../../store/actions/activeModal';
+import CustomModal from '../CustomModal/CustomModal';
+import selectActiveModal from '../../store/selectors/activeModal';
+import RefillSuccess from '../ModalViews/finance/RefillSuccess';
+import WithdrawFromAccount from '../ModalViews/finance/WithdrawFromAccount/WithdrawFromAccount';
 
 const createRow = (player, title, table, valueName) => {
   const value = `$${calculateAmountByType(player, table, valueName)}`;
@@ -31,6 +33,7 @@ function PlayerDetails({ player }) {
   const activeModal = useSelector(selectActiveModal);
 
   const isSuccessRefillOpen = activeModal.name === ACCOUNT_REFILL_SUCCESS;
+  const isWithdrawModalOpen = activeModal.name === SET_WITHDRAW_MODAL;
 
   const playerIncome = calculateIncome(player);
   const playerPayment = calculatePayment(player);
@@ -51,6 +54,10 @@ function PlayerDetails({ player }) {
       seIsSalaryEnabled(true);
       dispatch(showModal({ name: ACCOUNT_REFILL_SUCCESS }));
     }, 1000);
+  };
+
+  const withdrawFromAccount = () => {
+    dispatch(showModal({ name: SET_WITHDRAW_MODAL, data: player.uid }));
   };
 
   return (
@@ -103,20 +110,31 @@ function PlayerDetails({ player }) {
         </div>
         <div className={styles.accountInfo}>
           <Typography variant="h6" component="h4">{`Ежемесячный денежный поток: $${playerCashlow}`}</Typography>
-          <Typography variant="h6" component="h4">{`Наличные: $${player.cash}`}</Typography>
-          <Button
-            className={styles.refillButton}
-            variant="contained"
-            startIcon={<AddCircleIcon />}
-            disabled={!isSalaryEnabled}
-            onClick={addSalaryAmount}
-          >
-            Чек оплаты
-          </Button>
+          <Typography variant="h6" component="h4">{`БАНКОВСКИЙ СЧЕТ: $${player.cash}`}</Typography>
+          <div className={styles.buttonBlock}>
+            <Button
+              variant="contained"
+              startIcon={<AddCircleIcon />}
+              disabled={!isSalaryEnabled}
+              onClick={addSalaryAmount}
+            >
+              Чек оплаты
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              startIcon={<RemoveCircleIcon />}
+              disabled={!isSalaryEnabled}
+              onClick={withdrawFromAccount}
+            >
+              Списать со счета
+            </Button>
+          </div>
         </div>
       </Paper>
-      <CustomModal isOpen={isSuccessRefillOpen}>
-        <RefillSuccess />
+      <CustomModal isOpen={isSuccessRefillOpen || isWithdrawModalOpen}>
+        {isSuccessRefillOpen && <RefillSuccess />}
+        {isWithdrawModalOpen && <WithdrawFromAccount />}
       </CustomModal>
     </>
   );

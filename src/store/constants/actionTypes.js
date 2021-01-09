@@ -12,3 +12,4 @@ export const SHOW = 'SHOW';
 export const HIDE = 'HIDE';
 export const SET = 'SET';
 export const REFILL = 'REFILL';
+export const WITHDRAW = 'WITHDRAW';

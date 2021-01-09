@@ -45,9 +45,13 @@
     display: inline;
 }
 
-.refillButton {
+.buttonBlock {
     position: absolute!important;
     top: 50%;
     right: 100px;
     transform: translateY(-50%);
+
+    button {
+        margin: 10px;
+    }
 }
