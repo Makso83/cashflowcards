@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import { hideModal } from '../../../store/actions/activeModal';
+import { hideModal } from '../../../store/reducers/activeModal';
 
 function RefillSuccess() {
   const dispatch = useDispatch();

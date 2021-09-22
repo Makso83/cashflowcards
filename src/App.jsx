@@ -7,9 +7,8 @@ import CustomModal from './components/CustomModal/CustomModal';
 import NewPlayer from './components/ModalViews/NewPlayer/NewPlayer';
 import PlayersList from './components/PlayersList/PlayersList';
 import { NEW_PLAYER_MODAL } from './constants/modals';
-import { showModal } from './store/actions/activeModal';
-import selectActiveModal from './store/selectors/activeModal';
-import { selectPlayersList } from './store/selectors/players';
+import { showModal, selectActiveModal } from './store/reducers/activeModal';
+import { selectPlayersList } from './store/reducers/players';
 
 function App() {
   const activeModal = useSelector(selectActiveModal);

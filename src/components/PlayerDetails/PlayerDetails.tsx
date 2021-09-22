@@ -4,7 +4,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { useDispatch, useSelector } from 'react-redux';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -15,18 +14,18 @@ import {
   calculateIncome, calculatePayment,
 } from '../../utils/calculateAmounts';
 import styles from './PlayerDetails.module.scss';
-import { refillAccountCash, resetCurrentPlayer } from '../../store/actions/players';
+import { refillAccountCash, resetCurrentPlayer } from '../../store/reducers/players';
 import {
   ACCOUNT_REFILL_SUCCESS, ADD_BANK_DEBT, AMOUNT_DIALOG_MODAL, WITHDRAW_FROM_ACCOUNT,
 } from '../../constants/modals';
-import { showModal } from '../../store/actions/activeModal';
+import { showModal, selectActiveModal } from '../../store/reducers/activeModal';
 import CustomModal from '../CustomModal/CustomModal';
-import selectActiveModal from '../../store/selectors/activeModal';
 import RefillSuccess from '../ModalViews/finance/RefillSuccess';
 import AmountDialog from '../ModalViews/finance/AmountDialog/AmountDialog';
 import DetailsTable from '../DetailsTable/DetailsTable';
+import { ExtendedPlayer } from '../../utils/makeNewPlayer';
 
-function PlayerDetails({ player }) {
+const PlayerDetails: React.FC<{ player: ExtendedPlayer }> = ({ player }) => {
   const dispatch = useDispatch();
 
   const activeModal = useSelector(selectActiveModal);
@@ -34,8 +33,8 @@ function PlayerDetails({ player }) {
   const isSuccessRefillOpen = activeModal.name === ACCOUNT_REFILL_SUCCESS;
   const isWithdrawModalOpen = activeModal.name === AMOUNT_DIALOG_MODAL;
 
-  const playerIncome = calculateIncome(player);
-  const playerPayment = calculatePayment(player);
+  const playerIncome = calculateIncome(player) || 0;
+  const playerPayment = calculatePayment(player) || 0;
   const playerCashlow = playerIncome - playerPayment;
 
   const [isSalaryEnabled, seIsSalaryEnabled] = useState(true);
@@ -69,6 +68,12 @@ function PlayerDetails({ player }) {
       data: player.uid,
       type: ADD_BANK_DEBT,
     }));
+  };
+
+  const modalContent = () => {
+    if (isSuccessRefillOpen) return <RefillSuccess />;
+    if (isWithdrawModalOpen) return <AmountDialog amountType={activeModal.type} />;
+    return null;
   };
 
   return (
@@ -135,19 +140,10 @@ function PlayerDetails({ player }) {
         />
       </Paper>
       <CustomModal isOpen={isSuccessRefillOpen || isWithdrawModalOpen}>
-        {isSuccessRefillOpen && <RefillSuccess />}
-        {isWithdrawModalOpen && <AmountDialog amountType={activeModal.type} />}
+        {modalContent()}
       </CustomModal>
     </>
   );
-}
-
-PlayerDetails.defaultProps = {
-  player: {},
-};
-
-PlayerDetails.propTypes = {
-  player: PropTypes.object,
 };
 
 export default PlayerDetails;

@@ -1,8 +1,33 @@
-import uniqueId from 'lodash.uniqueid';
+import uniqid from 'uniqid';
 
-export default [
+export interface Incomes {
+  salary: number,
+  investing: Array<unknown>,
+  dividends: Array<unknown>,
+  estate: Array<unknown>,
+}
+
+type DebtsTypes = 'house' | 'education' | 'car' | 'cards' | 'shops' | 'bank'
+type PaymentsTypes = 'taxes' | 'other'
+
+export type Debts = Record<DebtsTypes, number>
+export type Payments = Record<PaymentsTypes, number>
+
+export interface PlayerTemplate {
+  professionId: string,
+  profession: string,
+  incomes: Incomes,
+  perChild: number,
+  cash: number,
+  debts: Debts,
+  payments: Payments,
+}
+
+export type Templates = Array<PlayerTemplate>
+
+const templates: Templates = [
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Конструктор',
     incomes: {
       salary: 4900,
@@ -26,7 +51,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Механик',
     incomes: {
       salary: 2000,
@@ -50,7 +75,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Врач',
     incomes: {
       salary: 13200,
@@ -74,7 +99,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Секретарь',
     incomes: {
       salary: 2500,
@@ -98,7 +123,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Офицер полиции',
     incomes: {
       salary: 3000,
@@ -122,7 +147,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Учитель',
     incomes: {
       salary: 3300,
@@ -146,7 +171,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Офис менеджер',
     incomes: {
       salary: 4600,
@@ -170,7 +195,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Водитель грузовика',
     incomes: {
       salary: 2500,
@@ -194,7 +219,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Медсестра',
     incomes: {
       salary: 3100,
@@ -218,7 +243,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Пилот',
     incomes: {
       salary: 9500,
@@ -242,7 +267,7 @@ export default [
     },
   },
   {
-    professionId: uniqueId(),
+    professionId: uniqid(),
     profession: 'Адвокат',
     incomes: {
       salary: 7500,
@@ -266,3 +291,5 @@ export default [
     },
   },
 ];
+
+export default templates;

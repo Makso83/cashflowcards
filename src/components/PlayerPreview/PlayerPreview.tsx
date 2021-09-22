@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,16 +10,16 @@ import CustomButton from '../CustomButton/CustomButton';
 import { calculateNetAmount } from '../../utils/calculateAmounts';
 
 import styles from './PlayerPreview.module.scss';
-import { showModal } from '../../store/actions/activeModal';
+import { showModal } from '../../store/reducers/activeModal';
 import { DELETE_PLAYER_MODAL } from '../../constants/modals';
-import { setCurrentPlayer } from '../../store/actions/players';
-import { selectCurrentPlayer } from '../../store/selectors/players';
+import { setCurrentPlayer, selectCurrentPlayer } from '../../store/reducers/players';
+import { ExtendedPlayer } from '../../utils/makeNewPlayer';
 
-function PlayerPreview({ player }) {
+const PlayerPreview: React.FC<{player: ExtendedPlayer}> = ({ player }) => {
   const dispatch = useDispatch();
   const currentPlayer = useSelector(selectCurrentPlayer);
 
-  const isCurrentPlayer = currentPlayer ? player.uid === currentPlayer.uid : false;
+  const isCurrentPlayer = currentPlayer ? player.uid === currentPlayer : false;
 
   const deletePlayer = () => {
     dispatch(showModal({
@@ -34,7 +33,7 @@ function PlayerPreview({ player }) {
   };
 
   const openDetails = () => {
-    dispatch(setCurrentPlayer(player));
+    dispatch(setCurrentPlayer(player.uid));
   };
 
   return (
@@ -55,14 +54,6 @@ function PlayerPreview({ player }) {
       </Card>
     </>
   );
-}
-
-PlayerPreview.defaultProps = {
-  player: {},
-};
-
-PlayerPreview.propTypes = {
-  player: PropTypes.object,
 };
 
 export default PlayerPreview;
