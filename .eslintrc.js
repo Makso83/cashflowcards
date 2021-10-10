@@ -26,6 +26,7 @@ module.exports = {
     'react/forbid-prop-types': 'off',
     'import/extensions': 'off',
     'no-prototype-builtins': 'off',
+    'no-console': 'off',
   },
   settings: {
     'import/resolver': {
