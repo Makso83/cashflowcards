@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_BANK_DEBT, WITHDRAW_FROM_ACCOUNT } from '../../../../constants/modals';
-import { hideModal } from '../../../../store/actions/activeModal';
-import { addBankCredit, setCurrentPlayer, withdrawAccountCash } from '../../../../store/actions/players';
-import { selectCurrentPlayer } from '../../../../store/selectors/players';
+import { hideModal } from '../../../../store/reducers/activeModal';
+import {
+  addBankCredit, setCurrentPlayer, withdrawAccountCash, selectCurrentPlayer, selectPlayersList,
+} from '../../../../store/reducers/players';
+
 import CustomButton from '../../../CustomButton/CustomButton';
 import CustomInput from '../../../CustomInput/CustomInput';
 
 import styles from './AmountDialog.module.scss';
 
 function AmountDialog({ amountType }) {
-  const currentPlayer = useSelector(selectCurrentPlayer);
+  const currentUid = useSelector(selectCurrentPlayer);
+  const playersList = useSelector(selectPlayersList);
+  const currentPlayer = playersList.find((player) => player.uid === currentUid);
   const [amount, setAmount] = useState(null);
   const [amountError, setAmountError] = useState(false);
   const dispatch = useDispatch();
@@ -51,7 +55,7 @@ function AmountDialog({ amountType }) {
     if (isAddBankDebt) {
       if (+amount % 1000 === 0) {
         dispatch(addBankCredit({ uid: currentPlayer.uid, amount }));
-        dispatch(setCurrentPlayer(currentPlayer));
+        dispatch(setCurrentPlayer(currentPlayer.uid));
         dispatch(hideModal());
       } else {
         setAmountError(true);

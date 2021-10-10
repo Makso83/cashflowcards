@@ -4,7 +4,7 @@ import ReactModal from 'react-modal';
 
 import { useDispatch } from 'react-redux';
 import styles from './CustomModal.module.scss';
-import { hideModal } from '../../store/actions/activeModal';
+import { hideModal } from '../../store/reducers/activeModal';
 
 function CustomModal({
   isOpen, children, customStyles,

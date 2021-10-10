@@ -1,7 +1,7 @@
 import React from 'react';
 import Chip from '@material-ui/core/Chip';
 import { useSelector } from 'react-redux';
-import { selectPlayersTemplates } from '../../store/selectors/players';
+import { selectPlayersTemplates } from '../../store/reducers/players';
 
 function AvailableProfessions() {
   const professions = useSelector(selectPlayersTemplates);

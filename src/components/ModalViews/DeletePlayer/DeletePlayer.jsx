@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import CustomButton from '../../CustomButton/CustomButton';
-import { deletePlayer, resetCurrentPlayer, restoreProfessionTemplate } from '../../../store/actions/players';
-import { hideModal } from '../../../store/actions/activeModal';
+import { deletePlayer, resetCurrentPlayer, restoreProfession } from '../../../store/reducers/players';
+import { hideModal } from '../../../store/reducers/activeModal';
 
 import styles from './DeletePlayer.module.scss';
 
@@ -13,7 +13,7 @@ function DeletePlayer({ playerName, playerUID, professionId }) {
     dispatch(resetCurrentPlayer());
     dispatch(deletePlayer(playerUID));
     dispatch(hideModal());
-    dispatch(restoreProfessionTemplate(professionId));
+    dispatch(restoreProfession(professionId));
   };
   return (
     <div className={styles.root}>

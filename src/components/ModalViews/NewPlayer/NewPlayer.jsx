@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectPlayersTemplates } from '../../../store/selectors/players';
-import { isTemplates } from '../../../utils/randomTemplate';
+import { selectPlayersTemplates, addPlayer, deleteProfession } from '../../../store/reducers/players';
+import { isTemplates } from '../../../utils/randomTemplate.ts';
 import CustomButton from '../../CustomButton/CustomButton';
 import CustomInput from '../../CustomInput/CustomInput';
-import { addPlayer, removeProfessionTemplate } from '../../../store/actions/players';
 
 import styles from './NewPlayer.module.scss';
-import { hideModal } from '../../../store/actions/activeModal';
+import { hideModal } from '../../../store/reducers/activeModal';
 import makeNewPlayer from '../../../utils/makeNewPlayer';
 
 export default () => {
@@ -30,7 +29,7 @@ export default () => {
     }
     const newPlayer = makeNewPlayer(nameValue, templates);
     dispatch(addPlayer(newPlayer));
-    dispatch(removeProfessionTemplate(newPlayer.professionId));
+    dispatch(deleteProfession(newPlayer.professionId));
     dispatch(hideModal());
     return true;
   };
